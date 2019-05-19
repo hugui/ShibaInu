@@ -30,14 +30,22 @@ import java.text.MessageFormat;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-
+/**
+ * 自定义实体类解析
+ */
+@SuppressWarnings(value = "unused")
 public class MyEntityResolve implements EntityResolve {
     private final Log log = LogFactory.getLog(MyEntityResolve.class);
 
     @Override
     public EntityTable resolveEntity(Class<?> entityClass, Config config) {
-        System.out.println("MyEntityResolve------------------------");
+        log.warn("正在使用 MyEntityResolve 解析------------------------");
         Style style = config.getStyle();
+
+        if (entityClass.isAnnotationPresent(MyNameStyle.class) && entityClass.isAnnotationPresent(NameStyle.class)) {
+            log.error("请不要同时使用@MyNameStyle，@NameStyle这两个注解，实体类：" + entityClass.getName());
+            throw new RuntimeException("请不要同时使用@MyNameStyle，@NameStyle这两个注解，实体类：" + entityClass.getName());
+        }
 
         //style，该注解优先于全局配置
         if (entityClass.isAnnotationPresent(NameStyle.class)) {
@@ -56,7 +64,7 @@ public class MyEntityResolve implements EntityResolve {
         }
         if (entityTable == null) {
             entityTable = new EntityTable(entityClass);
-            //可以通过stye控制
+            //可以通过style控制
             String tableName = StringUtil.convertByStyle(entityClass.getSimpleName(), style);
             //自动处理关键字
             if (StringUtil.isNotEmpty(config.getWrapKeyword()) && SqlReservedWords.containsWord(tableName)) {
@@ -64,8 +72,8 @@ public class MyEntityResolve implements EntityResolve {
             }
             entityTable.setName(tableName);
         }
-        entityTable.setEntityClassColumns(new LinkedHashSet<EntityColumn>());
-        entityTable.setEntityClassPKColumns(new LinkedHashSet<EntityColumn>());
+        entityTable.setEntityClassColumns(new LinkedHashSet<>());
+        entityTable.setEntityClassPKColumns(new LinkedHashSet<>());
         //处理所有列
         List<EntityField> fields = null;
         if (config.isEnableMethodAnnotation()) {
@@ -150,7 +158,7 @@ public class MyEntityResolve implements EntityResolve {
             if (style != null) {
                 columnName = StringUtil.convertByStyle(field.getName(), style);
             } else {
-                columnName = convertByPrefix(field);
+                columnName = convertWithPrefix(field);
             }
         }
         //自动处理关键字
@@ -178,7 +186,7 @@ public class MyEntityResolve implements EntityResolve {
      *
      * @return columnName 数据库字段
      */
-    private String convertByPrefix(EntityField field) {
+    private String convertWithPrefix(EntityField field) {
         Class javaType = field.getJavaType();
         String prefix = "C";
         if (javaType.equals(Integer.class) || javaType.equals(Double.class) || javaType.equals(Long.class)) {

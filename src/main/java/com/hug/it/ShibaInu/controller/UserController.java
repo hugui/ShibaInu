@@ -1,11 +1,11 @@
 package com.hug.it.ShibaInu.controller;
 
-import com.hug.it.ShibaInu.annotations.MyApi;
 import com.hug.it.ShibaInu.annotations.MyApiOperation;
 import com.hug.it.ShibaInu.entity.User;
 import com.hug.it.ShibaInu.mapper.UserMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,23 +26,40 @@ public class UserController {
     @Resource
     private UserMapper userMapper;
 
-    @GetMapping("/query/{id}")
-    @ApiOperation(value = "通过ID查询")
-    @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "long", paramType = "path")
-    public User findById(@PathVariable long id) {
-        log.info("通过ID查询,id:{}",id);
-        String name = userMapper.getUserNameById(id);
-        List<User> userList = userMapper.selectAll();
-        User user = userMapper.selectByPrimaryKey(id);
+    @GetMapping("/add/{name}/{age}")
+    @ApiOperation(value = "新增用户")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "name", value = "用户姓名", required = true, dataType = "string"),
+            @ApiImplicitParam(name = "age", value = "用户年龄", required = true, dataType = "integer"),
+    })
+    public User addUser(@PathVariable String name, @PathVariable int age) {
+        log.info("新增用户,name:{}，age:{}", name,age);
+        User user = new User();
+        user.setName(name);
+        user.setAge(age);
+        int i = userMapper.insertSelective(user);
         return user;
     }
 
-    @GetMapping("/query2/{id}")
-//    @ApiOperation()
-    @MyApiOperation(value = "通过ID查询222", author = "hugui", since = "3.0.0")
+    @GetMapping("/get/{id}")
+    @MyApiOperation(value = "通过ID查询", author = "hugui", since = "3.0.0")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "integer", paramType = "path")
-    public String findById2(@PathVariable int id) {
+    public String findById(@PathVariable int id) {
 
         return "id查询成功";
+    }
+
+    @GetMapping("/find/{name}")
+    public List<User> findUser(@PathVariable String name) {
+        List<User> userList = userMapper.findUserByName(name);
+
+        return userList;
+    }
+
+    @GetMapping("/getAll")
+    @ApiOperation(value = "查询所有用户")
+    public List<User> findById() {
+
+        return userMapper.selectAll();
     }
 }
