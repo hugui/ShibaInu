@@ -26,6 +26,7 @@ import tk.mybatis.mapper.util.SqlReservedWords;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.persistence.*;
+import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -39,14 +40,16 @@ public class MyEntityResolve implements EntityResolve {
 
     @Override
     public EntityTable resolveEntity(Class<?> entityClass, Config config) {
-        log.warn("正在使用 MyEntityResolve 解析------------------------");
         Style style = config.getStyle();
 
         if (entityClass.isAnnotationPresent(MyNameStyle.class) && entityClass.isAnnotationPresent(NameStyle.class)) {
             log.error("请不要同时使用@MyNameStyle，@NameStyle这两个注解，实体类：" + entityClass.getName());
             throw new RuntimeException("请不要同时使用@MyNameStyle，@NameStyle这两个注解，实体类：" + entityClass.getName());
         }
-
+//        Annotation[] annotations = entityClass.getDeclaredAnnotations();
+        if (entityClass.isAnnotationPresent(MyNameStyle.class)) {
+            log.warn("实体类:" + entityClass.getName() + ",使用了@MyNameStyle");
+        }
         //style，该注解优先于全局配置
         if (entityClass.isAnnotationPresent(NameStyle.class)) {
             NameStyle nameStyle = entityClass.getAnnotation(NameStyle.class);

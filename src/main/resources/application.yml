@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 8081
   tomcat:
     uri-encoding: UTF-8
 
@@ -7,7 +7,7 @@ spring:          #表示该配置直接为Spring容器负责处理
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource   #配置当前要使用的数据源的操作类型那个
     driver-class-name: com.mysql.jdbc.Driver       #配置MySQL的驱动程序类
-    url: jdbc:mysql://47.101.150.254:3306/hugui?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://localhost:3306/hugui?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
     username: hugui
     password: 123456
 #    filters: stat,wall,log4j     #druid监控配置

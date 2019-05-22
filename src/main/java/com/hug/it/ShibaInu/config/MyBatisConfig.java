@@ -20,8 +20,8 @@ public class MyBatisConfig {
         mapperScannerConfigurer.setBasePackage("com.hug.it.ShibaInu.mapper");
         Properties properties = new Properties();
 //        properties.setProperty("mappers", "com.hug.it.ShibaInu.mapper");
-        properties.setProperty("notEmpty", "false");
-        properties.setProperty("IDENTITY", "MYSQL");
+//        properties.setProperty("notEmpty", "false");
+//        properties.setProperty("IDENTITY", "MYSQL");
 //        properties.setProperty("style", "normal");
         properties.setProperty("resolveClass", "com.hug.it.ShibaInu.common.MyEntityResolve");
 

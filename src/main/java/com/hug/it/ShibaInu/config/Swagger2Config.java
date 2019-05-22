@@ -1,5 +1,6 @@
 package com.hug.it.ShibaInu.config;
 
+import com.hug.it.ShibaInu.annotations.ActivityApiOperation;
 import com.hug.it.ShibaInu.annotations.MyApi;
 import com.hug.it.ShibaInu.annotations.MyApiOperation;
 import io.swagger.annotations.Api;
@@ -7,6 +8,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -28,7 +32,7 @@ public class Swagger2Config {
     @Bean("所有模块")
     public Docket allApis() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("所有模块")
+                .groupName("ALL")
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .paths(PathSelectors.regex("/*.*"))
@@ -43,6 +47,17 @@ public class Swagger2Config {
                 .groupName("我的模块")
                 .select()
                 .apis(RequestHandlerSelectors.withMethodAnnotation(MyApiOperation.class))
+                .paths(PathSelectors.regex("/*.*"))
+                .build()
+                .apiInfo(apiInfo())
+                .enable(enable);
+    }
+    @Bean("活动模块")
+    public Docket activityApis() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("活动模块")
+                .select()
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ActivityApiOperation.class))
                 .paths(PathSelectors.regex("/*.*"))
                 .build()
                 .apiInfo(apiInfo())

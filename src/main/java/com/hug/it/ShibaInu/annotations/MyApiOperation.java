@@ -6,8 +6,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyApiOperation {
     String value();
-
-    String since();
-
-    String author();
 }

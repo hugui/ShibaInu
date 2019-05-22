@@ -18,12 +18,18 @@ public class MyOperationBuilderPlugin2 implements OperationBuilderPlugin {
     @Override
     public void apply(OperationContext context) {
         List<ApiOperation> list = context.findAllAnnotations(ApiOperation.class);
+        String summary = "";
         if (list.size() == 0) {
-            List<MyApiOperation> explainList = context.findAllAnnotations(MyApiOperation.class);
-            if (explainList.size() > 0) {
-                MyApiOperation explain = explainList.get(0);
-                context.operationBuilder().summary(explain.value() + ",since:" + explain.since() + ",author:" + explain.author());//替换默认值
+            List<MyApiOperation> myApiOperations = context.findAllAnnotations(MyApiOperation.class);
+            if (myApiOperations != null && myApiOperations.size() > 0) {
+                summary = myApiOperations.get(0).value();
+            } else {
+                List<ActivityApiOperation> activityApiOperations = context.findAllAnnotations(ActivityApiOperation.class);
+                if (activityApiOperations != null && activityApiOperations.size() > 0) {
+                    summary = activityApiOperations.get(0).value();
+                }
             }
+            context.operationBuilder().summary(summary);//替换默认值
         }
     }
 

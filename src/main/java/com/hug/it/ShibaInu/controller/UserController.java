@@ -1,5 +1,6 @@
 package com.hug.it.ShibaInu.controller;
 
+import com.hug.it.ShibaInu.annotations.ActivityApiOperation;
 import com.hug.it.ShibaInu.annotations.MyApiOperation;
 import com.hug.it.ShibaInu.entity.User;
 import com.hug.it.ShibaInu.mapper.UserMapper;
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/get/{id}")
-    @MyApiOperation(value = "通过ID查询", author = "hugui", since = "3.0.0")
+    @MyApiOperation(value = "通过ID查询")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "integer", paramType = "path")
     public String findById(@PathVariable int id) {
 
@@ -50,14 +51,15 @@ public class UserController {
     }
 
     @GetMapping("/find/{name}")
+    @ActivityApiOperation(value = "活动接口")
     public List<User> findUser(@PathVariable String name) {
         List<User> userList = userMapper.findUserByName(name);
 
         return userList;
     }
 
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有用户")
+    @GetMapping("/mini/getAll")
+    @ApiOperation(value = "小程序，查询所有用户")
     public List<User> findById() {
 
         return userMapper.selectAll();
