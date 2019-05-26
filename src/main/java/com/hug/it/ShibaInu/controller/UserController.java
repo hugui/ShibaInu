@@ -61,7 +61,10 @@ public class UserController {
     @GetMapping("/mini/getAll")
     @ApiOperation(value = "小程序，查询所有用户")
     public List<User> findById() {
-
+        List<User> list = userMapper.selectAll();
+        for (User user : list) {
+            System.out.println("用户名："+user.getName());
+        }
         return userMapper.selectAll();
     }
 }

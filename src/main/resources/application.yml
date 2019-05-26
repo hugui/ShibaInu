@@ -7,7 +7,7 @@ spring:          #表示该配置直接为Spring容器负责处理
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource   #配置当前要使用的数据源的操作类型那个
     driver-class-name: com.mysql.jdbc.Driver       #配置MySQL的驱动程序类
-    url: jdbc:mysql://localhost:3306/hugui?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://47.101.150.254:3306/hugui?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false
     username: hugui
     password: 123456
 #    filters: stat,wall,log4j     #druid监控配置
@@ -19,4 +19,17 @@ spring:          #表示该配置直接为Spring容器负责处理
 swagger2:
   enable: true
 
+### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+xxl.job.admin.addresses: http://127.0.0.1:8080/xxl-job-admin,http://127.0.0.1:8090/xxl-job-admin
+### xxl-job executor address
+xxl.job.executor.appname: xxl-job-executor-Shibalu
+xxl.job.executor.ip:
+xxl.job.executor.port: 8888
+
+### xxl-job, access token
+xxl.job.accessToken:
+### xxl-job log path
+xxl.job.executor.logpath: /data/applogs/xxl-job/jobhandler
+### xxl-job log retention days
+xxl.job.executor.logretentiondays: -1
 
