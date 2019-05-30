@@ -48,6 +48,7 @@ public class XxlJobConfig {
         xxlJobSpringExecutor.setPort(port);
         xxlJobSpringExecutor.setAccessToken(accessToken);
         xxlJobSpringExecutor.setLogPath(logPath);
+        System.out.println(">>>>>>>>>>> logPath:"+logPath);
         xxlJobSpringExecutor.setLogRetentionDays(logRetentionDays);
 
         return xxlJobSpringExecutor;
